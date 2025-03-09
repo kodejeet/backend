@@ -10,7 +10,16 @@ const myServer = http.createServer((req, res) =>{
 
      const log = `${Date.now()}: ${req.url} New Request Received\n`;   
     fs.appendFile("log.txt", log, (err,data) => {
-        res.end("Hello From Server");
+        // res.end("Hello From Server");
+        // multi route using switch case 
+        switch(req.url){
+            case '/': res.end("HomePage");
+            break
+            case '/about': res.end("I am Anon404");
+            break;
+            default:
+                res.end("404 Not Found")
+        }
     });     // non-blocking req
     
     // res.end("Hello From Server");
