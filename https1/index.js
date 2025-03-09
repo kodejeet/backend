@@ -8,7 +8,7 @@ const myServer = http.createServer((req, res) =>{
     // console.log(req.headers);          ----2
     // console.log(req);                  ----3
 
-     const log = `${Date.now()}:  New Request Received\n`;   
+     const log = `${Date.now()}: ${req.url} New Request Received\n`;   
     fs.appendFile("log.txt", log, (err,data) => {
         res.end("Hello From Server");
     });     // non-blocking req
