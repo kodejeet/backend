@@ -7,8 +7,19 @@ const PORT = 1111;
 
 // routes
 
-app.get('/users', function (req, res) {
+
+// for web-view
+app.get('/api/users', function (req, res) {
         return res.json(users);
+    });
+
+app.get("/users", (req, res) => {
+        const html = `
+        <ul>
+            ${users.map((user) => `<li>${user.first_name}</li>`).join("")}
+        </ul>
+        `;
+        res.send(html);
     });
 
 app.listen(PORT, () => console.log(`Server Started at PORT: ${PORT}`));
