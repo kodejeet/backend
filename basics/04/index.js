@@ -44,7 +44,7 @@ app
     // .patch((req, res) => {})
 
 
-.get("", );
+
 
 app.post("/api/users", (req,  res) => {
     // create new user 
