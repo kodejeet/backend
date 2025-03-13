@@ -24,10 +24,31 @@ app.get("/users", (req, res) => {
 
 // access through dynamic path 
 
-app.get("/api/users/:id", (req,  res) => {
-    const id = Number(req.params.id);
-    const user = users.find((user) => user.id === id);
-    return res.json(user);
+// efficient way of multiple https method routing 
+
+app
+    .route("/api/users/:id")
+    .get((req,  res) => {
+        const id = Number(req.params.id);
+        const user = users.find((user) => user.id === id);
+        return res.json(user);
+    })
+    .patch((req, res) => {
+        // edit user with id 
+        res.json({status: "pending"});
+    })
+    .delete((req, res) => {
+        // delete user with id 
+        res.json({status: "pending"});
+    })
+    // .patch((req, res) => {})
+
+
+.get("", );
+
+app.post("/api/users", (req,  res) => {
+    // create new user 
+    return res.json({status: "pending"});
 });
 
 app.listen(PORT, () => console.log(`Server Started at PORT: ${PORT}`));
