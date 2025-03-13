@@ -22,4 +22,12 @@ app.get("/users", (req, res) => {
         res.send(html);
     });
 
+// access through dynamic path 
+
+app.get("/api/users/:id", (req,  res) => {
+    const id = Number(req.params.id);
+    const user = users.find((user) => user.id === id);
+    return res.json(user);
+});
+
 app.listen(PORT, () => console.log(`Server Started at PORT: ${PORT}`));
