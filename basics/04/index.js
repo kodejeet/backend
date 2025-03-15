@@ -18,6 +18,7 @@ app.get("/api/users", function (req, res) {
 });
 
 app.get("/users", (req, res) => {
+  // this route responses as html instead of json 
   const html = `
         <ul>
             ${users.map((user) => `<li>${user.first_name}</li>`).join("")}
@@ -30,20 +31,51 @@ app.get("/users", (req, res) => {
 
 // efficient way of multiple https method routing
 
-app
-  .route("/api/users/:id")
+
+// efficient routing ---> no need to define routing again and again
+app.route("/api/users/:id")
   .get((req, res) => {
+    // get single user by id 
     const id = Number(req.params.id);
     const user = users.find((user) => user.id === id);
     return res.json(user);
   })
   .patch((req, res) => {
     // edit user with id
-    res.json({ status: "pending" });
+    const id = Number(req.params.id);
+    const userIndex = users.findIndex((user) => user.id === id);
+
+    if (userIndex === -1) {
+      return res.status(404).json({ error: "User not found" });
+    }
+    users[userIndex] = { ...users[userIndex], ...req.body };
+
+    fs.writeFile("./MOCK_DATA.json", JSON.stringify(users, null, 2), (err) => {
+      if (err) {
+        return res.status(500).json({ error: "Failed to update user" });
+      }
+      return res.json({ status: "success", user: users[userIndex] });
+    });
   })
   .delete((req, res) => {
     // delete user with id
-    res.json({ status: "pending" });
+    const id = Number(req.params.id);
+    // deleted the user if it matches the condition
+    const filteredUsers = users.filter((user) => user.id !== id);
+
+    if (filteredUsers.length === users.length) {
+      return res.status(404).json({ error: "User not found" });
+    }
+
+    users = filteredUsers;
+
+    // 2 here is used for identation (line spacing in json text)
+    fs.writeFile("./MOCK_DATA.json", JSON.stringify(users, null, 2), (err) => {
+      if (err) {
+        return res.status(500).json({ error: "Failed to delete user" });
+      }
+      return res.json({ status: "success", message: "User deleted" });
+    });
   });
 // .patch((req, res) => {})
 
