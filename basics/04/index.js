@@ -1,7 +1,7 @@
 // building a REST API from scratch
 
 const express = require("express");
-const users = require("./MOCK_DATA.json");
+let users = require("./MOCK_DATA.json");
 const app = express();
 const PORT = 1111;
 
@@ -9,6 +9,8 @@ const fs = require("fs");
 
 // middleware plugin
 app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
+
 
 // routes
 
