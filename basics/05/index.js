@@ -12,6 +12,9 @@ app.use(express.json());
 app.post("/api/users", (req, res) => {
   // create new user
   const { id, ...body } = req.body;
+  if (!first_name || !last_name || !email || !gender || !job_title) {
+    return res.status(400).json({ msg: "All fields are required." });
+  }
   const newId = id ?? users.length + 1;
   if (users.some((user) => user.id === newId)) {
     return res.status(400).json({ error: "User with this ID already exists" });
@@ -22,7 +25,7 @@ app.post("/api/users", (req, res) => {
     if (err) {
       return res.status(500).json({ error: "Failed to add user" });
     }
-    return res.status(201).json({ status: "success", id: newId });
+    return res.status(202).json({ status: "success", id: newId });
   });
 });
 app.listen(PORT, () => console.log(`Server Started at PORT: ${PORT}`));
